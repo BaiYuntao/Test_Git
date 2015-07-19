@@ -21,6 +21,10 @@ typedef struct {
 	int edgeNum;
 } Graph;
 
+int data[MAX];
+int idx;
+int flag;
+
 void createGraph(Graph* g)
 {
 	int i;
@@ -117,10 +121,13 @@ void topSort(Graph* g)
 	{
 		node = getZeroIndegree(g);
 		if(node == NULL)
-		{
-			printf("graph is cycle");
+		{	
+			flag = 1;
+			//printf("graph is cycle");
+			break;
 		}
-		printf("%d ", node->data);
+		//printf("%d ", node->data);
+		data[idx++] = node->data;
 		adjNode = node->list;
 		while(adjNode != NULL)
 		{
@@ -129,20 +136,37 @@ void topSort(Graph* g)
 		}
 		
 	}
-	printf("\n");
+	//printf("\n");
 }
 
 
 int main()
 {
 	Graph p;
+	int i = 0;
 
 	freopen("input.txt", "r", stdin);
 	setbuf(stdout, NULL);
 
 	createGraph(&p);
 	//printGraph(&p);
+	idx = 0;
+	flag = 0;
 	topSort(&p);
+
+	if(flag)
+	{
+		printf("Graph is cycle");
+	}
+	else 
+	{
+		for(i = 0; i < idx; ++i)
+		{
+			printf("%d ", data[i]);
+		}
+		printf("\n");
+	}
+
 	destroyGraph(&p);
 
 	return 0;
